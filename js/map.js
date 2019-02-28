@@ -9,6 +9,7 @@
 
     var map;
     var tiles;
+    var hash;
 
     var selector1 = "P1";
 
@@ -156,7 +157,6 @@ window.onmousemove = function (e) {
 
     d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-//    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.1h.json")
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
 
@@ -190,6 +190,8 @@ window.onmousemove = function (e) {
     
 
  map = L.map('map',{ zoomControl:true,minZoom:1});
+
+ hash = new L.Hash(map);
 
 
     tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{

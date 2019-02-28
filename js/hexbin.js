@@ -19,28 +19,12 @@ L.HexbinLayer = L.Layer.extend({
 //            Median everywhere!
             
             if (selector1 == "P1"){return parseInt(d3.median(d, (o) => o.o.data.PM10))}
-            
             if (selector1 == "P2"){return parseInt(d3.median(d, (o) => o.o.data.PM25))}
-
-                        
             if (selector1 == "officialus"){return d3.median(d, (o) => officialaqius(o.o.data))}
-        
             if (selector1 == "temp"){return d3.median(d, (o) => o.o.data.Temp)} 
             if (selector1 == "humi"){return d3.median(d, (o) => o.o.data.Humi)} 
             if (selector1 == "druck"){return d3.median(d, (o) => o.o.data.Press)} 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
 		}
-       
-        
 	},
 
 	initialize (options) {
