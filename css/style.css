@@ -47,8 +47,11 @@ body { height: 100%;
 
 #legendpm{visibility: visible}
 #legendpm2{visibility: hidden}
-#legendaqi{visibility: hidden}
 #legendaqius{visibility: hidden}
+#legendtemp{visibility: hidden}
+#legendhumi{visibility: hidden}
+#legenddruck{visibility: hidden}
+
 
 #legend-inner-pm {
         position: absolute;
@@ -84,19 +87,6 @@ body { height: 100%;
 #legend-inner-pm .labels .label:before {
         content: '\2013   ';
         }
-
-#legend-inner-pm .labels .label.limit {
-        color: #d50000;
-        }
-#legend-inner-pm .gradient .limit {
-    height: 2px;
-    width: 30px;
-    background-color: #d50000;
-    position: absolute;
-    left: -5px;
-    bottom: calc(40%);
-}
-
 
 
 
@@ -137,32 +127,118 @@ body { height: 100%;
         content: '\2013   ';
         }
 
-#legend-inner-pm2 .labels .label.limit {
-        color: #d50000;
+
+
+#legend-inner-temp {
+        position: absolute;
+        left: 30px;
+        bottom: 20px;
+        z-index: 1001;
+        pointer-events: none;
+        height: 80%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
         }
-#legend-inner-pm2 .gradient .limit {
-    height: 2px;
-    width: 30px;
-    background-color: #d50000;
-    position: absolute;
-    left: -5px;
-    bottom: calc(19%);
-}
+
+#legend-inner-temp .gradient {
+        opacity: 0.8;
+        width: 20px;
+        background: -webkit-linear-gradient(bottom, #0022FE 0%, #FFFFFF 30%, #FF0000 100%);
+        background: linear-gradient(to top, #0022FE 0%, #FFFFFF 30%, #FF0000 100%);
+        position: relative;
+        }
+
+#legend-inner-temp .labels {
+        width: 150px;
+        position: relative;
+        }
+
+#legend-inner-temp .labels .label {
+        position: absolute;
+        -webkit-transform: translateY(50%);
+        transform: translateY(50%);
+        }
+
+#legend-inner-temp .labels .label:before {
+        content: '\2013   ';
+        }
+        
+
+#legend-inner-humi {
+        position: absolute;
+        left: 30px;
+        bottom: 20px;
+        z-index: 1001;
+        pointer-events: none;
+        height: 80%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        }
+
+#legend-inner-humi .gradient {
+        opacity: 0.8;
+        width: 20px;
+        background: -webkit-linear-gradient(bottom, #FFFFFF 0%, #0000FF 100%);
+        background: linear-gradient(to top, #FFFFFF 0%, #0000FF 100%);
+        position: relative;
+        }
+
+#legend-inner-humi .labels {
+        width: 150px;
+        position: relative;
+        }
+
+#legend-inner-humi .labels .label {
+        position: absolute;
+        -webkit-transform: translateY(50%);
+        transform: translateY(50%);
+        }
 
 
-#legendaqi span {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    position: relative;
-    top: 3px;
-}
+#legend-inner-humi .labels .label:before {
+        content: '\2013   ';
+        }
 
-#legendaqi ul {
-    padding: 0;
-    margin: 5px 10px;
-    list-style-type: none;
-}
+
+
+#legend-inner-druck {
+        position: absolute;
+        left: 30px;
+        bottom: 20px;
+        z-index: 1001;
+        pointer-events: none;
+        height: 80%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        }
+
+#legend-inner-druck .gradient {
+        opacity: 0.8;
+        width: 20px;
+        background: -webkit-linear-gradient(bottom, #FF0000 0%, #FE9E01 50%, #00796B 100%);
+        background: linear-gradient(to top, #FF0000 0%, #FE9E01 50%, #00796B 100%);
+        position: relative;
+        }
+
+#legend-inner-druck .labels {
+        width: 150px;
+        position: relative;
+        }
+
+#legend-inner-druck .labels .label {
+        position: absolute;
+        -webkit-transform: translateY(50%);
+        transform: translateY(50%);
+        }
+
+
+#legend-inner-druck .labels .label:before {
+        content: '\2013   ';
+        }
+
 
 #legendaqius span {
     display: inline-block;
@@ -186,10 +262,6 @@ li {
 
 
 
-
-
-
-
 .tooltip {
     text-decoration:none;
     position:relative;
@@ -204,17 +276,6 @@ li {
     background-color: white;
     z-index:1000;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

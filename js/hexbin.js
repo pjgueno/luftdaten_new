@@ -16,29 +16,30 @@ L.HexbinLayer = L.Layer.extend({
 		},
 		value: function (d) {
             
-            if (selector1 == "P1" && (selector2 == "aktuell" || selector2 == "1h" || selector2 == "24h" || selector2 == "aqia" || selector2 == "aqi1s" || selector2 == "aqi24s")){return parseInt(d3.median(d, (o) => o.o.data.PM10))}
+//            Median everywhere!
             
-            if (selector1 == "P2" && (selector2 == "aktuell" || selector2 == "1h" || selector2 == "24h" || selector2 == "aqia" || selector2 == "aqi1s" || selector2 == "aqi24s")){return parseInt(d3.median(d, (o) => o.o.data.PM25))}
-                        
-            if (selector1 == "P1" && (selector2 == "aqiusa" || selector2 == "aqius1s" || selector2 == "aqius24s")){return d3.median(d, (o) => aqius(o.o.data.PM10,'P1'))}
+            if (selector1 == "P1"){return parseInt(d3.median(d, (o) => o.o.data.PM10))}
             
-            if (selector1 == "P2" && (selector2 == "aqiusa" || selector2 == "aqius1s" || selector2 == "aqius24s")){return d3.median(d, (o) => aqius(o.o.data.PM25,'P2'))}
+            if (selector1 == "P2"){return parseInt(d3.median(d, (o) => o.o.data.PM25))}
+
                         
-            if (selector2 == "officialus"){return d3.median(d, (o) => officialaqius(o.o.data))}
+            if (selector1 == "officialus"){return d3.median(d, (o) => officialaqius(o.o.data))}
+        
+            if (selector1 == "temp"){return d3.median(d, (o) => o.o.data.Temp)} 
+            if (selector1 == "humi"){return d3.median(d, (o) => o.o.data.Humi)} 
+            if (selector1 == "druck"){return d3.median(d, (o) => o.o.data.Press)} 
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
 		}
-        
-        
-//        ELIMINER DE LA MOYENNE OU BIEN TEST API SUR LES 3 DERNIERS JOURS
-        
-//        SI UN SEUL AU DESSUS => IL RESTE => QUE POUR MOYENNE
-        
-        
-//        REVOIR LES MOYENNES POUR LE OFFICIALUS => FAIRE LA MOYENNE POUR HEXBIN APRES AVOIR DETEMINÉ LE PLUS GRAND AQI
-        
-        
-        //d3.mean remplacé par d3.median!!!!
-
+       
         
 	},
 
@@ -50,6 +51,17 @@ L.HexbinLayer = L.Layer.extend({
 			.range(this.options.colorRange)
 			.clamp(true)
 	},
+    
+    // Make hex radius dynamic for different zoom levels to give a nicer overview of the sensors as well as making sure that the hex grid does not cover the whole world when zooming out
+	getFlexRadius () {
+		if (this.map.getZoom() < 3) {
+			return this.options.radius / (3 * (4 - this.map.getZoom()))
+		} else if (this.map.getZoom() > 2 && this.map.getZoom() < 8) {
+			return this.options.radius / (9 - this.map.getZoom())
+		} else {
+			return this.options.radius
+		}
+    },
 
 	onAdd (map) {
 		this.map = map
@@ -189,7 +201,8 @@ L.HexbinLayer = L.Layer.extend({
 		// Create the bins using the hexbin layout
         
 		let hexbin = d3.hexbin()
-			.radius(this.options.radius / projection.scale)
+//			.radius(this.options.radius / projection.scale)
+            .radius(this.getFlexRadius() / projection.scale)
 			.x( (d) => d.point.x )
 			.y( (d) => d.point.y )
 		let bins = hexbin(data)
@@ -435,11 +448,7 @@ function sensorNr(data){
                 .duration(200)		
                 .style("display", "inline");
     
-//            div	.html(textefin)	
-//                .style("left", (d3.event.pageX-45) + "px")		
-//                .style("top", (d3.event.pageY-10) + "px");
-    
-    
+
             div	.html(textefin)	
                 .style("left","0px")		
                 .style("top","100px");
@@ -1146,40 +1155,3 @@ function removeInArray(array) {
     
     return array;
 }
-
-
-//function officialaqieu(data){
-//    
-//    var P1 = d3.median(data, (o) => o.o.data.PM10);
-//    var P2 = d3.median(data, (o) => o.o.data.PM25);
-//    
-//    if (P1>=P2){return parseInt(P1)};
-//    if (P1<P2){return parseInt(P2)}; 
-//    
-//};
-//
-//
-//
-//
-//function compare(val,option){
-//
-//        if(option == 'P1'){
-//
-//    
-//        if (parseInt(val)<=20){return 0.5};
-//        if (20<parseInt(val)<=35){return 1.5};
-//        if (35<parseInt(val)<=50){return 2.5};
-//        if (50<parseInt(val)<=100){return 3.5};
-//        if (100<parseInt(val)<=1200){return 4.5};
-//        };
-//             
-//    if(option == 'P2'){
-//    
-//        if (parseInt(val)<=10){return 0.5};
-//        if (10<parseInt(val)<=20){return 1.5};
-//        if (20<parseInt(val)<=25){return 2.5};
-//        if (25<parseInt(val)<=50){return 3.5};
-//        if (50<parseInt(val)<=800){return 4.5};
-//        
-//    };
-//};

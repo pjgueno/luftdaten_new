@@ -1,50 +1,90 @@
     var hexagonheatmap;
     var hmhexaPM_aktuell;
-    var hmhexaPM_1Stunde;
     var hmhexaPM_24Stunden;
+    var hmhexatemp;
+    var hmhexahumi;
+    var hmhexadruck;
+
 
 
     var map;
     var tiles;
 
     var selector1 = "P1";
-    var selector2 = "aktuell";
 
     var P1orP2 = "";
 
+
+
+//    P10
 
     var options1 = {
                 valueDomain: [20, 40, 60, 100, 500],
                 colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
                 };
 
-//REVOIR LES GRADIENTS
+//    PM2.5
+
 
     var options2 = {
-                valueDomain: [0,10,11,20,21,25,26, 50,51,800],
-                colorRange: ['#50f0e6','#50f0e6','#50ccaa','#50ccaa','#f0e641','#f0e641','#ff5050','#ff5050','#960032', '#960032']	
-                };
-
-    var options3 = {
-                valueDomain: [0,20, 21,35, 36,50,51,100,101, 1200],
-                colorRange: ['#50f0e6','#50f0e6','#50ccaa', '#50ccaa','#f0e641', '#f0e641','#ff5050', '#ff5050','#960032', '#960032']	
-                };
-
-    var options4 = {
-                valueDomain: [0,50,51,100,101,150,151,200,201,300,301,500],
-                colorRange: ['#00E400','#00E400','#FFFF00','#FFFF00','#FF7E00', '#FF7E00','#FF0000', '#FF0000','rgb(143, 63, 151)', 'rgb(143, 63, 151)','#7E0023','#7E0023']	
-                };
-
-
-    var options5 = {
                 valueDomain: [10, 20, 40, 60, 100],
                 colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
                 };
 
-//    var options6 = {
-//                valueDomain: [0,1,1,2,2,3,3,4,4, 5],
-//                colorRange: ['#50f0e6','#50f0e6','#50ccaa','#50ccaa','#f0e641','#f0e641','#ff5050','#ff5050','#960032', '#960032']	
+
+//    AQI US
+
+//change in order to make gradient
+
+//    var options3 = {
+//                valueDomain: [0,50,51,100,101,150,151,200,201,300,301,500],
+//                colorRange: ['#00E400','#00E400','#FFFF00','#FFFF00','#FF7E00', '#FF7E00','#FF0000', '#FF0000','rgb(143, 63, 151)', 'rgb(143, 63, 151)','#7E0023','#7E0023']	
 //                };
+
+
+
+   var options3 = {
+                valueDomain: [0,50,100,150,200,300],
+                colorRange: ['#00E400','#FFFF00','#FF7E00','#FF0000','rgb(143, 63, 151)','#7E0023']	
+                };
+
+
+
+
+    var options4 = {
+                    valueDomain: [-20, 0, 50],
+                    colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
+                };
+
+
+
+
+
+    var options5 = {
+                    valueDomain: [0,100],
+                  colorRange: ['#FFFFFF', '#0000FF']	
+                };
+
+
+
+
+
+
+    var options6 = {
+                   valueDomain: [92600, 101300, 110000],
+                    colorRange: ['#FF0000', '#FE9E01', '#00796B']	
+                };
+
+            
+
+
+
+
+
+
+
+
+
 
 
 
@@ -99,10 +139,15 @@ window.onmousemove = function (e) {
         
     hexagonheatmap = L.hexbinLayer(options1).addTo(map);
         
+        
+//        REVOIR ORDRE DANS FONCTION READY
+        
        d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.1h.json")
+//    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.1h.json")
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
+    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+
     .awaitAll(ready); 
                    
    d3.interval(function(){ 
@@ -111,8 +156,10 @@ window.onmousemove = function (e) {
 
     d3.queue()
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.1h.json")
+//    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.1h.json")
     .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
+    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+
     .awaitAll(ready); 
             
        console.log('reload')
@@ -162,17 +209,7 @@ window.onmousemove = function (e) {
 //      console.log(hmhexaPM_aktuell);
       
       
-      hmhexaPM_1Stunde = data[1].reduce(function(filtered, item) {
-                  if (item.sensor.sensor_type.name == "SDS011") {
-                 filtered.push({"data":{"PM10": parseInt(getRightValue(item.sensordatavalues,"P1")) , "PM25":parseInt( getRightValue(item.sensordatavalues,"P2"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
-              return filtered;
-            }, []);
-      
-//            console.log(hmhexaPM_1Stunde);
-
-      
-      
-      hmhexaPM_24Stunden = data[2].reduce(function(filtered, item) {
+      hmhexaPM_24Stunden = data[1].reduce(function(filtered, item) {
                   if (item.sensor.sensor_type.name == "SDS011") {
                  filtered.push({"data":{"PM10": parseInt(getRightValue(item.sensordatavalues,"P1")) , "PM25":parseInt( getRightValue(item.sensordatavalues,"P2"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
               return filtered;
@@ -180,38 +217,67 @@ window.onmousemove = function (e) {
       
 //    console.log(hmhexaPM_24Stunden);
 
-      
-      if(selector2 == "aktuell" && selector1 == "P1") {makeHexagonmap(hmhexaPM_aktuell,options1);};      
-      if(selector2 == "1Stunde" && selector1 == "P1"){makeHexagonmap(hmhexaPM_1Stunde,options1);};
-      if(selector2 == "24Stunden" && selector1 == "P1"){makeHexagonmap(hmhexaPM_24Stunden,options1);};
-      
-        if(selector2 == "aktuell" && selector1 == "P2") {makeHexagonmap(hmhexaPM_aktuell,options5);};      
-      if(selector2 == "1Stunde" && selector1 == "P2"){makeHexagonmap(hmhexaPM_1Stunde,options5);};
-      if(selector2 == "24Stunden" && selector1 == "P2"){makeHexagonmap(hmhexaPM_24Stunden,options5);};
-      
-      if(selector2 == "aqia" && selector1 == "P2" ){makeHexagonmap(hmhexaPM_aktuell,options2);};
-      if(selector2 == "aqia" && selector1 == "P1" ){makeHexagonmap(hmhexaPM_aktuell,options3);};
-      
-      if(selector2 == "aqi1s" && selector1 == "P2" ){makeHexagonmap(hmhexaPM_1Stunde,options2);};
-      if(selector2 == "aqi1s" && selector1 == "P1" ){makeHexagonmap(hmhexaPM_1Stunde,options3);};
-      
-      if(selector2 == "aqi24s" && selector1 == "P2" ){makeHexagonmap(hmhexaPM_24Stunden,options2);};
-      if(selector2 == "aqi24s" && selector1 == "P1" ){makeHexagonmap(hmhexaPM_24Stunden,options3);};
 
-//      PM10 and PM2.5 values are based on 24-hour running means
+//      REVOIR LES TYPES DE SENSORS
+
       
-//      FILTRER LES 800 + et les 1200+
+      hmhexatemp = data[2].reduce(function(filtered, item) {
+          
+          if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "DHT22") {
+              
+              filtered.push({"data":{"Temp":parseInt(getRightValue(item.sensordatavalues,"temperature"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
+              return filtered;
+            }, []);
+
+      
+      hmhexahumi = data[2].reduce(function(filtered, item) {
+          
+          if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "DHT22") {
+              
+              filtered.push({"data":{"Humi":parseInt(getRightValue(item.sensordatavalues,"humidity"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
+              return filtered;
+            }, []);
+                
+//            console.log(hmhexahumi);
+
       
       
-      if(selector2 == "aqiusa"){makeHexagonmap(hmhexaPM_aktuell,options4);};
-      if(selector2 == "aqius1s"){makeHexagonmap(hmhexaPM_1Stunde,options4);};      
-      if(selector2 == "aqius24s"){makeHexagonmap(hmhexaPM_24Stunden,options4);};
+       hmhexadruck = data[2].reduce(function(filtered, item) {
+                             
+           
+//           if (item.sensordatavalues.length == 3) {
+           
+                 if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "BMP180" || item.sensor.sensor_type.name == "BMP280" ) {
+                         
+                 filtered.push({"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure_at_sealevel"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})}
+              return filtered;
+            }, []);
       
-//      if(selector2 == "officialeu"){makeHexagonmap(hmhexaPM_24Stunden,options6);};
-      if(selector2 == "officialus"){makeHexagonmap(hmhexaPM_24Stunden,options4);};      
+      
+//                  console.log(hmhexadruck);
+
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      if(selector1 == "P1") {makeHexagonmap(hmhexaPM_aktuell,options1);};      
+      if(selector1 == "P2") {makeHexagonmap(hmhexaPM_aktuell,options2);};     
+      
+      if(selector1 == "officialus"){makeHexagonmap(hmhexaPM_24Stunden,options3);};
+      if(selector1 == "temp"){makeHexagonmap(hmhexatemp,options4);};      
+      if(selector1 == "humi"){makeHexagonmap(hmhexahumi,options5);};      
+      if(selector1 == "druck"){makeHexagonmap(hmhexadruck,options6);};      
+
+      
+      
+
+
       
       
       
@@ -250,238 +316,101 @@ function makeHexagonmap(data,option){
             case "P2":
             selector1 = "P2";
             break;
-            case "aktuell":
-            selector2 = "aktuell";
-            break;
-            case "1h":
-            selector2 = "1h";
-            break;
-            case "24h":
-            selector2 = "24h";
-            break;  
-            case "aqia":
-            selector2 = "aqia";
-            break;  
-            case "aqi1s":
-            selector2 = "aqi1s";
-            break;  
-            case "aqi24s":
-            selector2 = "aqi24s";
-            break;  
-            case "aqiusa":
-            selector2 = "aqiusa";
-            break; 
-            case "aqius1s":
-            selector2 = "aqius1s";
-            break; 
-            case "aqius24s":
-            selector2 = "aqius24s";
-            break; 
-//            case "officialeu":
-//            selector2 = "officialeu";
-//            break;
             case "officialus":
-            selector2 = "officialus";
-            break; 
+            selector1 = "officialus";
+            break;
+            case "temp":
+            selector1 = "temp";
+            break;
+            case "humi":
+            selector1 = "humi";
+            break;
+            case "druck":
+            selector1 = "druck";
+            break;
   
             };
             
                                 console.log(selector1);
-                                console.log(selector2);
 
 
 
             
     
-            if(selector2 == "aktuell" && selector1 == "P1"){
+            if(selector1 == "P1"){
                 hexagonheatmap.initialize(options1);
                 hexagonheatmap.data(hmhexaPM_aktuell); 
-                document.getElementById('legendaqi').style.visibility='hidden';
                 document.getElementById('legendaqius').style.visibility='hidden';
                 document.getElementById('legendpm').style.visibility='visible';
                 document.getElementById('legendpm2').style.visibility='hidden';
+                document.getElementById('legendtemp').style.visibility='hidden';
+                document.getElementById('legendhumi').style.visibility='hidden';
+                document.getElementById('legenddruck').style.visibility='hidden';
             };
     
             
-             if(selector2 == "1h" && selector1 == "P1"){
-                hexagonheatmap.initialize(options1);
-                hexagonheatmap.data(hmhexaPM_1Stunde); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='visible';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-            };
-            
-            
-             if(selector2 == "24h" && selector1 == "P1"){
-                hexagonheatmap.initialize(options1);
-                hexagonheatmap.data(hmhexaPM_24Stunden); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='visible';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-            };
-            
-            
-//            AJOUTER OPTIONS
-            
-            
-              if(selector2 == "aktuell" && selector1 == "P2"){
-                hexagonheatmap.initialize(options5);
+              if(selector1 == "P2"){
+                hexagonheatmap.initialize(options2);
                 hexagonheatmap.data(hmhexaPM_aktuell); 
-                document.getElementById('legendaqi').style.visibility='hidden';
                 document.getElementById('legendaqius').style.visibility='hidden';
                 document.getElementById('legendpm').style.visibility='hidden';
                 document.getElementById('legendpm2').style.visibility='visible';
+                document.getElementById('legendtemp').style.visibility='hidden';
+                document.getElementById('legendhumi').style.visibility='hidden';
+                document.getElementById('legenddruck').style.visibility='hidden';
             };
-    
-            
-             if(selector2 == "1h" && selector1 == "P2"){
-                hexagonheatmap.initialize(options5);
-                hexagonheatmap.data(hmhexaPM_1Stunde); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='visible';
-            };
-            
-            
-             if(selector2 == "24h" && selector1 == "P2"){
-                hexagonheatmap.initialize(options5);
-                hexagonheatmap.data(hmhexaPM_24Stunden); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='visible';
-            };
-            
-            
-            
-      if(selector2 == "aqia" && selector1 == "P2" ){
-                hexagonheatmap.initialize(options2);
-                hexagonheatmap.data(hmhexaPM_aktuell); 
-                document.getElementById('legendaqi').style.visibility='visible';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
 
-      };
-            
-      if(selector2 == "aqia" && selector1 == "P1" ){
-                hexagonheatmap.initialize(options3);
-                hexagonheatmap.data(hmhexaPM_aktuell);  
-                document.getElementById('legendaqi').style.visibility='visible';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-      
-      if(selector2 == "aqi1s" && selector1 == "P2" ){
-                hexagonheatmap.initialize(options2);
-                hexagonheatmap.data(hmhexaPM_1Stunde);   
-                document.getElementById('legendaqi').style.visibility='visible';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-            
-      if(selector2 == "aqi1s" && selector1 == "P1" ){
-                hexagonheatmap.initialize(options3);
-                hexagonheatmap.data(hmhexaPM_1Stunde); 
-                document.getElementById('legendaqi').style.visibility='visible';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-      
-      if(selector2 == "aqi24s" && selector1 == "P2" ){
-                hexagonheatmap.initialize(options2);
-                hexagonheatmap.data(hmhexaPM_24Stunden); 
-                document.getElementById('legendaqi').style.visibility='visible';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-            
-      if(selector2 == "aqi24s" && selector1 == "P1" ){
+    if(selector1 == "officialus"){
                 hexagonheatmap.initialize(options3);
                 hexagonheatmap.data(hmhexaPM_24Stunden); 
-                document.getElementById('legendaqi').style.visibility='visible';
-                document.getElementById('legendaqius').style.visibility='hidden';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-
-            
-      if(selector2 == "aqiusa"){
-                hexagonheatmap.initialize(options4);
-                hexagonheatmap.data(hmhexaPM_aktuell); 
-                document.getElementById('legendaqi').style.visibility='hidden';
                 document.getElementById('legendaqius').style.visibility='visible';
                 document.getElementById('legendpm').style.visibility='hidden';
                 document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-      
-      if(selector2 == "aqius1s"){
-                hexagonheatmap.initialize(options4);
-                hexagonheatmap.data(hmhexaPM_1Stunde); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='visible';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-            
-      if(selector2 == "aqius24s"){
-                hexagonheatmap.initialize(options4);
-                hexagonheatmap.data(hmhexaPM_24Stunden); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='visible';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
-
-      };
-            
-            
-//    if(selector2 == "officialeu"){
-//                hexagonheatmap.initialize(options6);
-//                hexagonheatmap.data(hmhexaPM_24Stunden); 
-//                document.getElementById('legendaqi').style.visibility='visible';
-//                document.getElementById('legendaqius').style.visibility='hidden';
-//                document.getElementById('legendpm').style.visibility='hidden';
-//                document.getElementById('legendpm2').style.visibility='hidden';
-//
-//      };        
-    
-
-    if(selector2 == "officialus"){
-                hexagonheatmap.initialize(options4);
-                hexagonheatmap.data(hmhexaPM_24Stunden); 
-                document.getElementById('legendaqi').style.visibility='hidden';
-                document.getElementById('legendaqius').style.visibility='visible';
-                document.getElementById('legendpm').style.visibility='hidden';
-                document.getElementById('legendpm2').style.visibility='hidden';
+                document.getElementById('legendtemp').style.visibility='hidden';
+                document.getElementById('legendhumi').style.visibility='hidden';
+                document.getElementById('legenddruck').style.visibility='hidden';
 
       };
           
-            
+             if(selector1 == "temp"){
+                hexagonheatmap.initialize(options4);
+                hexagonheatmap.data(hmhexatemp); 
+                document.getElementById('legendaqius').style.visibility='hidden';
+                document.getElementById('legendpm').style.visibility='hidden';
+                document.getElementById('legendpm2').style.visibility='hidden';
+                document.getElementById('legendtemp').style.visibility='visible';
+                document.getElementById('legendhumi').style.visibility='hidden';
+                document.getElementById('legenddruck').style.visibility='hidden';
+
+      };
        
-            
+             if(selector1 == "humi"){
+                hexagonheatmap.initialize(options5);
+                hexagonheatmap.data(hmhexahumi); 
+                document.getElementById('legendaqius').style.visibility='hidden';
+                document.getElementById('legendpm').style.visibility='hidden';
+                document.getElementById('legendpm2').style.visibility='hidden';
+                document.getElementById('legendtemp').style.visibility='hidden';
+                document.getElementById('legendhumi').style.visibility='visible';
+                document.getElementById('legenddruck').style.visibility='hidden';
+
+      };
            
+            if(selector1 == "druck"){
+                hexagonheatmap.initialize(options6);
+                hexagonheatmap.data(hmhexadruck); 
+                document.getElementById('legendaqius').style.visibility='hidden';
+                document.getElementById('legendpm').style.visibility='hidden';
+                document.getElementById('legendpm2').style.visibility='hidden';
+                document.getElementById('legendtemp').style.visibility='hidden';
+                document.getElementById('legendhumi').style.visibility='hidden';
+                document.getElementById('legenddruck').style.visibility='visible';
+
+      }; 
             
-            
+
             
        if (openedGraph.length >0){
-           
-
            
            openedGraph.forEach(function(item){
                
@@ -523,7 +452,7 @@ function success(position) {
 
 
 function error() {
-    output.innerHTML = "Unable to retrieve your location";
+    console.log("Unable to retrieve your location");
   };
 
 
@@ -584,30 +513,5 @@ function openSideBar(value){
         document.getElementById('menu').innerHTML='Close';
 
     };
-    
-    
-//    if (value == 'false'){
-//    
-//        document.getElementById('sidebar').style.visibility='visible';
-//        document.getElementById('menu').value='true';
-//        document.getElementById('menu').innerHTML='Close';
-//
-//        console.log(value);
-//        
-//        return;
-//        
-//    };
-//    
-//    if (value == 'false'){
-//    
-//        document.getElementById('sidebar').style.visibility='hidden';
-//        document.getElementById('menu').value='false';
-//        document.getElementById('menu').innerHTML='Open';
-//
-//        console.log(value);
-//        
-//        return;
-//        
-//    };
     
 };

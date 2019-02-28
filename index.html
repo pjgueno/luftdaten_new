@@ -22,33 +22,17 @@
        <form id="selector1">
               <input type="radio" name="switch" value="P1" onclick="reload(this.value)" checked> PM10<br>
               <input type="radio" name="switch" value="P2" onclick="reload(this.value)"> PM2.5<br>
-        </form> 
-        <br>
-
-         <form id="selector2">
-              <input type="radio" name="switch" value="aktuell" onclick="reload(this.value)" checked> Aktuelle Werte<br>
-              <input type="radio" name="switch" value="1h" onclick="reload(this.value)"> Mittelwert 1 St.<br>
-             <input type="radio" name="switch" value="24h" onclick="reload(this.value)"> Mittelwert 24 St.<br><br>
-             <input type="radio" name="switch" value="aqia" onclick="reload(this.value)"> AQI EU aktuell<br>
-             <input type="radio" name="switch" value="aqi1s" onclick="reload(this.value)"> AQI EU 1 Stunde<br>
-             <input type="radio" name="switch" value="aqi24s" onclick="reload(this.value)"> AQI EU 24 Stunde<br>
-             <br>
-             <input type="radio" name="switch" value="aqiusa" onclick="reload(this.value)"> AQI US aktuell<br>
-             <input type="radio" name="switch" value="aqius1s" onclick="reload(this.value)"> AQI US 1 Stunde<br>
-             <input type="radio" name="switch" value="aqius24s" onclick="reload(this.value)"> AQI US 24 Stunde<br>
-             <br>
-    <!--         <input type="radio" name="switch" value="officialeu" onclick="reload(this.value)"> Official AQI EU<br>-->
-             <input type="radio" name="switch" value="officialus" onclick="reload(this.value)"> Official AQI US<br>
+              <input type="radio" name="switch" value="officialus" onclick="reload(this.value)"> Official AQI US<br>
+           <input type="radio" name="switch" value="temp" onclick="reload(this.value)"> Temperature<br>
+           <input type="radio" name="switch" value="humi" onclick="reload(this.value)"> Feuchtigkeit<br>
+           <input type="radio" name="switch" value="druck" onclick="reload(this.value)"> Druck<br>
+ 
         </form> 
 
     </div>
            </div> 
     
-    
-    
-    
-    
-    
+
     </div>
 
     
@@ -56,28 +40,17 @@
     
        <script type="text/javascript" src="js/map.js"></script> 
         <script src="js/hexbin.js"></script>
-        
-        
-        
-    
-        
-        
-        
 
-
-        
-        
     <div id ='legendcontainer'>
         <div class ="legend" id="legendpm">
             <div id="legend-inner-pm">
                 <div class="gradient">
-                    <div class="limit"></div>
                 </div>
                 <div class="labels">
                     <div class="label" style="bottom: 100%;"><b>500</b></div>
                     <div class="label" style="bottom: 80%;"><b>100</b></div>
                     <div class="label" style="bottom: 60%;"><b>75</b></div>
-                    <div class="label limit" style="bottom: 41%;"><b>50</b></div>
+                    <div class="label limit" style="bottom: 40%;"><b>50</b></div>
                     <div class="label" style="bottom: 20%;"><b>25</b></div>
                     <div class="label" style="bottom: 1%;"><b>0 &micro;g/m&sup3;</b></div>
                 </div>
@@ -88,7 +61,6 @@
          <div class ="legend" id="legendpm2">
             <div id="legend-inner-pm2">
                 <div class="gradient">
-                    <div class="limit"></div>
                 </div>
                 <div class="labels">
                     <div class="label" style="bottom: 100%;"><b>500</b></div>
@@ -100,17 +72,6 @@
                 </div>
             </div>
         </div> 
-        
-        <div class ="legend" id="legendaqi" >
-        <h3>Air quality EU</h3>
-        <ul>
-            <li><span style="background-color:#50f0e6"></span> Good</li>
-            <li><span style="background-color:#50ccaa"></span> Fair</li>
-            <li><span style="background-color:#f0e641"></span> Moderate</li>
-            <li><span style="background-color:#ff5050"></span> Poor</li>
-            <li><span style="background-color:#960032"></span> Very poor</li>
-        </ul>
-        </div>
         
         <div class ="legend" id="legendaqius" >
         <h3>Air quality US</h3>
@@ -124,6 +85,56 @@
         </ul>
         </div>
          
+        
+        
+        <div class ="legend" id="legendtemp">
+            <div id="legend-inner-temp">
+            <div class="gradient">
+            <div class="limit">
+            </div>
+            </div>
+            <div class="labels">
+            <div class="label" style="bottom: 100%;"><b>50</b></div>
+            <div class="label" style="bottom: 65%;"><b>25</b></div>
+            <div class="label" style="bottom: 30%;"><b>0</b></div>
+            <div class="label" style="bottom: 1%;"><b>-20 &deg;</b></div>
+            </div>
+            </div>
+        </div>
+    
+        <div class ="legend" id="legendhumi">
+            <div id="legend-inner-humi">
+            <div class="gradient">
+            <div class="limit">
+            </div>
+            </div>
+            <div class="labels">
+            <div class="label" style="bottom: 100%;"><b>100</b></div>
+            <div class="label" style="bottom: 80%;"><b>80</b></div>
+            <div class="label" style="bottom: 60%;"><b>60</b></div>
+            <div class="label " style="bottom: 40%;"><b>40</b></div>
+            <div class="label" style="bottom: 20%;"><b>20</b></div>
+            <div class="label" style="bottom: 1%;"><b>0 &#37;</b></div>
+            </div>
+            </div>
+        </div> 
+        
+        
+        
+        <div class ="legend" id="legenddruck">
+            <div id="legend-inner-druck">
+            <div class="gradient">
+            <div class="limit">
+            </div>
+            </div>
+            <div class="labels">
+            <div class="label " style="bottom: 100%;"><b>1100</b></div>
+            <div class="label" style="bottom: 50%;"><b>1013</b></div>
+            <div class="label" style="bottom: 1%;"><b>926 hPa</b></div>
+            </div>
+            </div>
+        </div> 
+          
         
     </div>
 
