@@ -8,4 +8,4 @@ It uses leaflet.js and D3.js.
 
 https://github.com/opendata-stuttgart
 
-One can build her/his own Particulate Matter sensor for around 30 €. The traduction of our Website in english will be published soon. You will find there the instructions to build the sensor.# aqi
+One can build her/his own Particulate Matter sensor for around 30 €. The traduction of our Website in english will be published soon. You will find there the instructions to build the sensor.
