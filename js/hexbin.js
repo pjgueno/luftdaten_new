@@ -5,7 +5,7 @@ L.HexbinLayer = L.Layer.extend({
 		opacity: 0.6,
 		duration: 200,
 		onmouseover: undefined,
-		onmouseout: undefined,
+		onmouseout: undefined,        
         click: sensorNr,
 
 		lng: function (d) {
@@ -259,47 +259,59 @@ function sensorNr(data){
     if (data.length == 1){
         
         
-        if (selector1 == "P1" && (selector2 == "aktuell" || selector2 == "1h" || selector2 == "24h" || selector2 == "aqia" || selector2 == "aqi1s" || selector2 == "aqi24s")){
+        if (selector1 == "P1"){
             var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM10 &micro;g/m&sup3;</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P1sens'>"+parseInt(data[0].o.data.PM10)+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";
         };
         
-        if (selector1 == "P2" && (selector2 == "aktuell" || selector2 == "1h" || selector2 == "24h" || selector2 == "aqia" || selector2 == "aqi1s" || selector2 == "aqi24s")){
+        if (selector1 == "P2"){
             var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM2.5 &micro;g/m&sup3;</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P2sens'>"+parseInt(data[0].o.data.PM25)+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";   
         };
         
-        if (selector1 == "P1" && (selector2 == "aqiusa" || selector2 == "aqius1s" || selector2 == "aqius24s")){
+        if (selector1 == "temp"){
         
-            var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM10 AQI US</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P1sens'>"+parseInt(aqius(data[0].o.data.PM10,'P1'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";  
+            var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>Temperature °C</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='tempsens'>"+parseInt(aqius(data[0].o.data.PM10,'P1'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";  
         
         };
         
         
         
-        if (selector1 == "P2" && (selector2 == "aqiusa" || selector2 == "aqius1s" || selector2 == "aqius24s")){
+        if (selector1 == "humi"){
                 
-              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM2.5 AQI US</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P2sens'>"+parseInt(aqius(data[0].o.data.PM25,'P2'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
+              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>Feuctigkeit %</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='humisens'>"+parseInt(aqius(data[0].o.data.PM25,'P2'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
                      
         };
         
         
-        if (P1orP2 == "P1" && selector2 == "officialus"){
+        if (selector1 == "druck"){
                 
-              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM10 AQI US</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P1sens'>"+parseInt(aqius(data[0].o.data.PM10,'P1'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
+              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>Druck hPa</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='drucksens'>"+parseInt(aqius(data[0].o.data.PM25,'P2'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
                      
         };
         
-        if (P1orP2 == "P2" && selector2 == "officialus" ){
-                
-              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM2.5 AQI US</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P2sens'>"+parseInt(aqius(data[0].o.data.PM25,'P2'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
-                     
-        };
+        
+        
+//        
+//        REVOIR POUR AQI US
+//        
+//        if (P1orP2 == "P1" && selector2 == "officialus"){
+//                
+//              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM10 AQI US</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P1sens'>"+parseInt(aqius(data[0].o.data.PM10,'P1'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
+//                     
+//        };
+//        
+//        if (P1orP2 == "P2" && selector2 == "officialus" ){
+//                
+//              var textefin = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensor</th><th class = 'titre'>PM2.5 AQI US</th></tr><tr><td class='idsens' value="+data[0].o.id+" onclick='displayGraph("+data[0].o.id+")'>#"+data[0].o.id+"</td><td id='P2sens'>"+parseInt(aqius(data[0].o.data.PM25,'P2'))+"</td></tr><tr id='graph_"+data[0].o.id+"' colspan='2' ></tr></table>";    
+//                     
+//        };
         
     
     };
     
     
     
-    
+//    <iframe src="https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=1&var-node=" width="290" height="200" frameborder="0"></iframe>
+//<iframe src="https://maps.luftdaten.info/grafana/d-solo/000000004/single-sensor-view?orgId=1&panelId=2&var-node=" width="290" height="200" frameborder="0"></iframe>
     
     
     

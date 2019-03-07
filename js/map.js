@@ -103,7 +103,7 @@
 var tooltipDiv = document.getElementsByClassName('tooltip-div');
 
 
-console.log(tooltipDiv);
+//console.log(tooltipDiv);
 
 window.onmousemove = function (e) {
     var x = e.clientX,
@@ -173,23 +173,37 @@ window.onmousemove = function (e) {
             
         });
         
+        
+        
+//        REVOIR LES idselec!
+        
         map.on('move', function() { 
 //        div.style("display", "none");
             idselec1=0;
             idselec0=0;    
         });
 
-        map.on('click', function() { 
+        map.on('dblclick', function() { 
 //        div.style("display", "none");
             idselec1=0;
             idselec0=0;
         });
         
+//        map.on('click', function() { 
+////        div.style("display", "none");
+//            idselec1=0;
+//            idselec0=0;
+//        });
         
+        
+           map.on('click', function(e) {
+               map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());    
+        });
+              
     };
     
 
- map = L.map('map',{ zoomControl:true,minZoom:1});
+ map = L.map('map',{ zoomControl:true,minZoom:1,doubleClickZoom:false});
 
  hash = new L.Hash(map);
 
@@ -262,7 +276,7 @@ window.onmousemove = function (e) {
       
       
       
-      
+      document.getElementById('update').innerHTML = "Last update: " + data[0][0].timestamp;
       
       
       
@@ -276,14 +290,6 @@ window.onmousemove = function (e) {
       if(selector1 == "humi"){makeHexagonmap(hmhexahumi,options5);};      
       if(selector1 == "druck"){makeHexagonmap(hmhexadruck,options6);};      
 
-      
-      
-
-
-      
-      
-      
-      
               
  };      
     

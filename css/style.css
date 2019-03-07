@@ -28,6 +28,34 @@ body { height: 100%;
         background:rgb(255, 255, 255,1.0);
         }
 
+#update{
+        font-family: arial, sans-serif;
+        color:black;
+        font-size: 14px;
+        position:absolute;
+        top:20px;
+        left:100px;
+        width: 200px;
+        height: auto;
+        z-index: 1000;
+        background:rgb(255, 255, 255,1.0);
+}
+
+select{
+        font-family: arial, sans-serif;
+        color:black;
+        font-size: 14px;
+        position:absolute;
+        bottom:40px;
+        left:500px;
+        width: 200px;
+        height: auto;
+        z-index: 1000;
+        background:rgb(255, 255, 255,1.0);
+}
+
+
+
 
 
 
