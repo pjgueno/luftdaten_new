@@ -53,7 +53,7 @@ var options5 = {
 			};
 
 var options6 = {
-			valueDomain: [92600, 101300, 110000],
+			valueDomain: [926, 1013, 1100],
 			colorRange: ['#FF0000', '#FE9E01', '#00796B']
 			};
 
