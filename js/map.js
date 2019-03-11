@@ -18,6 +18,8 @@
 
     var places;
     var zooms;
+    var cooCenter;
+    var zoomLevel; 
 
 
 //    P10
@@ -141,7 +143,11 @@ if (location.hash) {
 		var zoomLevel = hash_params[0].substring(1);
 //} else if (location.hostname.split(".").length == 4){
     
-}else { var hostname = location.hostname; var hostname_parts = hostname.split("."); if (hostname_parts.length = 4) {
+}else { 
+    var hostname = location.hostname; 
+    var hostname_parts = hostname.split("."); 
+       
+       if (hostname_parts.length == 4) {
     
     
     
@@ -151,33 +157,43 @@ if (location.hash) {
     d3.json("/CODES/luftdaten_new/js/places.json",function(data){
     
     console.log(data);        
-        places = data;    
+        places = data;  
+        
+        if (typeof places[place] !== 'undefined' && places[place] !== null) {
+			 cooCenter = places[place];
+			 zoomLevel = 11;
+		}else{cooCenter = [50.495171, 9.730827];
+             zoomLevel = 6;
+             };
+        
+        
+        
            });
                    
     d3.json("/CODES/luftdaten_new/js/zooms.json",function(data){
     
     console.log(data);        
-        zooms = data;    
+        zooms = data; 
+        
+        if (typeof zooms[place] !== 'undefined' && zooms[place] !== null) {
+            zoomLevel = zooms[place];
+		}else{cooCenter = [50.495171, 9.730827];
+             zoomLevel = 6;
+             };
+        
            });
                
-        
-		if (typeof places[place] !== 'undefined' && places[place] !== null) {
-			var cooCenter = places[place];
-			var zoomLevel = 11;
-		}
-		if (typeof zooms[place] !== 'undefined' && zooms[place] !== null) {
-			var zoomLevel = zooms[place];
-		}
-	console.log("Center: "+cooCenter);
-	console.log("Zoom: "+zoomLevel)
-}
+
       }else{
     
-    var cooCenter = [50.495171, 9.730827];
-    var zoomLevel = 6;  
+     cooCenter = [50.495171, 9.730827];
+     zoomLevel = 6;  
 };
+    
+    console.log("Center: "+cooCenter);
+	console.log("Zoom: "+zoomLevel)
 
-
+};
 
 
     window.onload=function(){
@@ -568,7 +584,7 @@ function drop() {
     document.getElementById("control").classList.toggle("show");
     idselec1=0;
     idselec0=0;
-}
+};
 
 function openSideBar(value){
     
