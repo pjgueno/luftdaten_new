@@ -139,7 +139,11 @@ if (location.hash) {
 		var hash_params = location.hash.split("/");
 		var cooCenter = [hash_params[1],hash_params[2]];
 		var zoomLevel = hash_params[0].substring(1);
-} else if (location.hostname.split(".").length == 4){
+//} else if (location.hostname.split(".").length == 4){
+    
+}else { var hostname = location.hostname; var hostname_parts = hostname.split("."); if (hostname_parts.length = 4) {
+    
+    
     
 		var place = hostname_parts[0].toLowerCase();
         
@@ -166,7 +170,8 @@ if (location.hash) {
 		}
 	console.log("Center: "+cooCenter);
 	console.log("Zoom: "+zoomLevel)
-}else{
+}
+      }else{
     
     var cooCenter = [50.495171, 9.730827];
     var zoomLevel = 6;  
