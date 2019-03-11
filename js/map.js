@@ -158,9 +158,9 @@ window.onload=function(){
 		d3.selectAll('path.hexbin-hexagon').remove();
 
 		d3.queue()
-			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
-			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+			.defer(d3.json, "https://maps.luftdaten.info/data/v2/data.dust.min.json")
+			.defer(d3.json, "https://maps.luftdaten.info/data/v2/data.24h.json")
+			.defer(d3.json, "https://maps.luftdaten.info/data/v2/data.temp.min.json")
 
 			.awaitAll(ready); 
 
