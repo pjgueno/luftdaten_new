@@ -136,31 +136,27 @@ window.onmousemove = function (e) {
 
 
 if (location.hash) {
-		var hash_params = location.hash.split("/");
-		var cooCenter = [hash_params[1],hash_params[2]];
-		var zoomLevel = hash_params[0].substring(1);
+	var hash_params = location.hash.split("/");
+	var cooCenter = [hash_params[1],hash_params[2]];
+	var zoomLevel = hash_params[0].substring(1);
 //} else if (location.hostname.split(".").length == 4){
     
-}else { var hostname = location.hostname; var hostname_parts = hostname.split("."); if (hostname_parts.length = 4) {
-    
-    
-    
+} else {
+	var hostname = location.hostname;
+	var hostname_parts = hostname.split(".");
+	if (hostname_parts.length = 4) {
 		var place = hostname_parts[0].toLowerCase();
-        
- 
-    d3.json("/CODES/luftdaten_new/js/places.json",function(data){
-    
-    console.log(data);        
-        places = data;    
-           });
-                   
-    d3.json("/CODES/luftdaten_new/js/zooms.json",function(data){
-    
-    console.log(data);        
-        zooms = data;    
-           });
-               
-        
+
+		d3.json("/CODES/luftdaten_new/js/places.json",function(data){
+			console.log(data);        
+			places = data;    
+		});
+
+		d3.json("/CODES/luftdaten_new/js/zooms.json",function(data){
+			console.log(data);        
+			zooms = data;    
+		});
+
 		if (typeof places[place] !== 'undefined' && places[place] !== null) {
 			var cooCenter = places[place];
 			var zoomLevel = 11;
@@ -168,19 +164,18 @@ if (location.hash) {
 		if (typeof zooms[place] !== 'undefined' && zooms[place] !== null) {
 			var zoomLevel = zooms[place];
 		}
-	console.log("Center: "+cooCenter);
-	console.log("Zoom: "+zoomLevel)
-}
-      }else{
-    
-    var cooCenter = [50.495171, 9.730827];
-    var zoomLevel = 6;  
+		console.log("Center: "+cooCenter);
+		console.log("Zoom: "+zoomLevel)
+	} else {
+		var cooCenter = [50.495171, 9.730827];
+		var zoomLevel = 6;
+	}
 };
 
 
 
 
-    window.onload=function(){
+	window.onload=function(){
         
 //          if (!navigator.geolocation){
 //    console.log("Geolocation is not supported by your browser");
@@ -193,35 +188,34 @@ if (location.hash) {
         
 //    map.setView([50.495171, 9.730827], 6);
         
-    map.setView(cooCenter, zoomLevel);
+	map.setView(cooCenter, zoomLevel);
 
         
-    hexagonheatmap = L.hexbinLayer(options1).addTo(map);
-        
-        
+	hexagonheatmap = L.hexbinLayer(options1).addTo(map);
+
 //        REVOIR ORDRE DANS FONCTION READY
         
-       d3.queue()
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+	d3.queue()
+		.defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
+		.defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
+		.defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
 
-    .awaitAll(ready); 
+		.awaitAll(ready); 
                    
-   d3.interval(function(){ 
+	d3.interval(function(){ 
     
-    d3.selectAll('path.hexbin-hexagon').remove();
+	d3.selectAll('path.hexbin-hexagon').remove();
 
-    d3.queue()
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+	d3.queue()
+		.defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
+		.defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
+		.defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
 
-    .awaitAll(ready); 
+		.awaitAll(ready); 
             
-       console.log('reload')
+	console.log('reload')
                      
-    }, 300000);
+}, 300000);
 
  
         map.on('moveend', function() { 
@@ -525,61 +519,54 @@ function makeHexagonmap(data,option){
 
 
 function color(val){  
+	var col= parseInt(val);
     
-        
-     var col= parseInt(val);
-    
-    if(val>= 0 && val < 25){ return "#00796b";};
-    if(val>= 25 && val < 50){
-        var couleur = interpolColor('#00796b','#f9a825',(col-25)/25);
-        return couleur;
-    };
-    if(val>= 50 && val < 75){
-        var couleur = interpolColor('#f9a825','#e65100',(col-50)/25);
-        return couleur;
-    };
-    if(val>= 75 && val < 100){
-        var couleur = interpolColor('#e65100','#dd2c00',(col-75)/25);
-        return couleur;
-    };
-    if(val>=100 && val < 500){
-        var couleur = interpolColor('#dd2c00','#8c0084',(col-100)/400);
-        return couleur;
-    };
-    
-    if(val>=100 && val < 500){ return "#8c0084";};   
+	if(val>= 0 && val < 25){ return "#00796b";};
+	if(val>= 25 && val < 50){
+		var couleur = interpolColor('#00796b','#f9a825',(col-25)/25);
+		return couleur;
+	};
+	if(val>= 50 && val < 75){
+		var couleur = interpolColor('#f9a825','#e65100',(col-50)/25);
+		return couleur;
+	};
+	if(val>= 75 && val < 100){
+		var couleur = interpolColor('#e65100','#dd2c00',(col-75)/25);
+		return couleur;
+	};
+	if(val>=100 && val < 500){
+		var couleur = interpolColor('#dd2c00','#8c0084',(col-100)/400);
+		return couleur;
+	};
 
- 
+    if(val>=100 && val < 500){ return "#8c0084";};
 };
 
 function interpolColor(a, b, amount) { 
-    var ah = parseInt(a.replace(/#/g, ''), 16),
-        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
-        bh = parseInt(b.replace(/#/g, ''), 16),
-        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
-        rr = ar + amount * (br - ar),
-        rg = ag + amount * (bg - ag),
-        rb = ab + amount * (bb - ab);
-//    console.log('#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1));
-    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+	var ah = parseInt(a.replace(/#/g, ''), 16),
+			ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+			bh = parseInt(b.replace(/#/g, ''), 16),
+			br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+			rr = ar + amount * (br - ar),
+			rg = ag + amount * (bg - ag),
+			rb = ab + amount * (bb - ab);
+//	console.log('#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1));
+	return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
 };
 
 function drop() {
-    document.getElementById("control").classList.toggle("show");
-    idselec1=0;
-    idselec0=0;
+	document.getElementById("control").classList.toggle("show");
+	idselec1=0;
+	idselec0=0;
 }
 
 function openSideBar(value){
-    
-   var x = document.getElementById("sidebar");
-    if (x.style.display === "block") {
-        x.style.display = "none";
-        document.getElementById('menu').innerHTML='Open';
-    } else {
-        x.style.display = "block";
-        document.getElementById('menu').innerHTML='Close';
-
-    };
-    
+	var x = document.getElementById("sidebar");
+	if (x.style.display === "block") {
+		x.style.display = "none";
+		document.getElementById('menu').innerHTML='Open';
+	} else {
+		x.style.display = "block";
+		document.getElementById('menu').innerHTML='Close';
+	};
 };
