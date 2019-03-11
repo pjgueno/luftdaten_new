@@ -252,7 +252,7 @@ function ready(error,data) {
 	hmhexadruck = data[2].reduce(function(filtered, item) {
 //		if (item.sensordatavalues.length == 3) {
 		if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "BMP180" || item.sensor.sensor_type.name == "BMP280" ) {
-			filtered.push({"data":{"Press":Math.round(parseInt(getRightValue(item.sensordatavalues,"pressure_at_sealevel"))/100)/10}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})
+			filtered.push({"data":{"Press":Math.round(parseInt(getRightValue(item.sensordatavalues,"pressure_at_sealevel"))/10)/10}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})
 		}
 		return filtered;
 	}, []);
