@@ -12,10 +12,7 @@
 	var selector1 = "P1";
 
 	var P1orP2 = "";
-
-	var places;
-	var zooms;
-
+	
 //	P10
 
 	var options1 = {
@@ -114,18 +111,6 @@
 		if (hostname_parts.length = 4) {
 			var place = hostname_parts[0].toLowerCase();
 			console.log(place);
-
-			d3.json("js/places.json",function(error,data){
-				console.log(error);
-				places = JSON.parse(JSON.stringify(data));
-			});
-			console.log(places);
-
-			d3.json("js/zooms.json",function(error,data){
-				console.log(error);
-				zooms = JSON.parse(JSON.stringify(data));
-				console.log(zooms);
-			});
 
 			if (typeof places[place] !== 'undefined' && places[place] !== null) {
 				var cooCenter = places[place];
