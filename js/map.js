@@ -147,14 +147,16 @@ if (location.hash) {
 	if (hostname_parts.length = 4) {
 		var place = hostname_parts[0].toLowerCase();
 
-		d3.json("js/places.json",function(data){
-			console.log(data);        
-			places = data;    
+		d3.json("js/places.json",function(error,data){
+			console.log(error);
+			places = data;
+			console.log(places);
 		});
 
-		d3.json("js/zooms.json",function(data){
-			console.log(data);        
-			zooms = data;    
+		d3.json("js/zooms.json",function(error,data){
+			console.log(error);
+			zooms = data;
+			console.log(zooms);
 		});
 
 		if (typeof places[place] !== 'undefined' && places[place] !== null) {
