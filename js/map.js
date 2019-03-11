@@ -379,7 +379,7 @@ function reload(val){
 	};
 
 };
-    
+
 function getRightValue(array,type){
 	var value;
 	array.forEach(function(item){
@@ -387,12 +387,12 @@ function getRightValue(array,type){
 	});
 	return value;
 };
-    
+
 //function success(position) {
 //	var latitude  = position.coords.latitude;
 //	var longitude = position.coords.longitude;
 //
-//	console.log("OK POSITION");  
+//	console.log("OK POSITION");
 //
 //	L.marker([latitude,longitude]).addTo(map);
 //
@@ -406,7 +406,7 @@ function getRightValue(array,type){
 //};
 
 
-function color(val){  
+function color(val){
 	var col= parseInt(val);
 
 	if(val>= 0 && val < 25){ return "#00796b";};
