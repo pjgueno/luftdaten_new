@@ -13,6 +13,12 @@ var selector1 = "P1";
 
 var P1orP2 = "";
 
+//var cooCenter = [50.495171, 9.730827];
+//var zoomLevel = 6;
+var cooCenter = [0, 0];
+var zoomLevel = 2;
+
+
 //	P10
 
 var options1 = {
@@ -121,9 +127,6 @@ if (location.hash) {
 		}
 		console.log("Center: "+cooCenter);
 		console.log("Zoom: "+zoomLevel)
-	} else {
-		var cooCenter = [50.495171, 9.730827];
-		var zoomLevel = 6;
 	}
 };
 
