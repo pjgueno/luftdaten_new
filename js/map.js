@@ -147,12 +147,12 @@ if (location.hash) {
 	if (hostname_parts.length = 4) {
 		var place = hostname_parts[0].toLowerCase();
 
-		d3.json("/CODES/luftdaten_new/js/places.json",function(data){
+		d3.json("js/places.json",function(data){
 			console.log(data);        
 			places = data;    
 		});
 
-		d3.json("/CODES/luftdaten_new/js/zooms.json",function(data){
+		d3.json("js/zooms.json",function(data){
 			console.log(data);        
 			zooms = data;    
 		});
