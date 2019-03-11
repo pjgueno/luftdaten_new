@@ -117,13 +117,13 @@
 
 			d3.json("js/places.json",function(error,data){
 				console.log(error);
-				places = data;
+				places = JSON.parse(JSON.stringify(data));
 			});
 			console.log(places);
 
 			d3.json("js/zooms.json",function(error,data){
 				console.log(error);
-				zooms = data;
+				zooms = JSON.parse(JSON.stringify(data));
 				console.log(zooms);
 			});
 
