@@ -1,4 +1,4 @@
-{"europe": [57.5,22],
+var places = {"europe": [57.5,22],
 "deutschland": [51.165,10.4553],
 "germany": [51.165,10.4553],
 "baden-wuerttemberg": [48.53,9.05],

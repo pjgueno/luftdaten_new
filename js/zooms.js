@@ -1,4 +1,4 @@
-{"europe": 4,
+var zooms = {"europe": 4,
 "deutschland": 6,
 "germany": 6,
 "baden-wuerttemberg": 8,

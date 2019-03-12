@@ -3,152 +3,138 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="css/style.css" />
+<!--
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
-  
-
-
-</head>
-        
-<body>
-                
-<!--    <button id="menu" value = "false" onclick="openSideBar(this.value)">Open</button>  -->
-    
-    <img id="menu" src="menu.png" value = "false" onclick="openSideBar(this.value)">
-    
-    <div id="sidebar">
-  
-    
-
-    </div>
-    
-    
-    <select id="selector1" onchange = reload(this.value)>
-        <option value="P1" checked> PM10</option>
-        <option value="P2"> PM2.5</option>
-        <option value="officialus"> Official AQI US</option>
-        <option value="temp"> Temperature</option>
-        <option value="humi"> Feuchtigkeit</option>
-        <option value="druck"> Druck</option>
-    </select>
-    
-    
-    
-    <div id ='map'>
-        
-<!--
-        <script type="text/javascript" src="js/leaflet-hash.js"></script>
-       <script type="text/javascript" src="js/map.js"></script> 
-        <script type="text/javascript" src="js/hexbin.js"></script>
 -->
-    <div id ='update'></div>
+<link rel="stylesheet" href="/leaflet/leaflet@1.1.0/dist/leaflet.css" />
+</head>
 
+<body>
 
-    <div id ='legendcontainer'>
-        <div class ="legend" id="legendpm">
-            <div id="legend-inner-pm">
-                <div class="gradient">
-                </div>
-                <div class="labels">
-                    <div class="label" style="bottom: 100%;"><b>500</b></div>
-                    <div class="label" style="bottom: 80%;"><b>100</b></div>
-                    <div class="label" style="bottom: 60%;"><b>75</b></div>
-                    <div class="label limit" style="bottom: 40%;"><b>50</b></div>
-                    <div class="label" style="bottom: 20%;"><b>25</b></div>
-                    <div class="label" style="bottom: 1%;"><b>0 &micro;g/m&sup3;</b></div>
-                </div>
-            </div>
-        </div>  
-        
-        
-         <div class ="legend" id="legendpm2">
-            <div id="legend-inner-pm2">
-                <div class="gradient">
-                </div>
-                <div class="labels">
-                    <div class="label" style="bottom: 100%;"><b>500</b></div>
-                    <div class="label" style="bottom: 80%;"><b>100</b></div>
-                    <div class="label" style="bottom: 60%;"><b>75</b></div>
-                    <div class="label" style="bottom: 41%;"><b>50</b></div>
-                    <div class="label limit" style="bottom: 20%;"><b>25</b></div>
-                    <div class="label" style="bottom: 1%;"><b>0 &micro;g/m&sup3;</b></div>
-                </div>
-            </div>
-        </div> 
-        
-        <div class ="legend" id="legendaqius" >
-        <h3>Air quality US</h3>
-        <ul>
-            <li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#00E400"></span> Good<div class="tooltip-div">Air quality is considered satisfactory, and air pollution poses little or no risk.</div></li>
-            <li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#FFFF00"></span> Moderate<div class="tooltip-div">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</div></li>
-            <li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#FF7E00"></span> Unhealthy for Sensitive Groups<div class="tooltip-div">Members of sensitive groups may experience health effects. The general public is not likely to be affected. </div></li>
-            <li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#FF0000"></span> Unhealthy<div class="tooltip-div">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects.</div></li>
-            <li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:rgb(143, 63, 151)"></span> Very Unhealthy<div class="tooltip-div">Health alert: everyone may experience more serious health effects.</div></li>
-            <li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#7E0023"></span> Hazardous<div class="tooltip-div">Health warnings of emergency conditions. The entire population is more likely to be affected.</div></li>
-        </ul>
-        </div>
-         
-        
-        
-        <div class ="legend" id="legendtemp">
-            <div id="legend-inner-temp">
-            <div class="gradient">
-            <div class="limit">
-            </div>
-            </div>
-            <div class="labels">
-            <div class="label" style="bottom: 100%;"><b>50</b></div>
-            <div class="label" style="bottom: 65%;"><b>25</b></div>
-            <div class="label" style="bottom: 30%;"><b>0</b></div>
-            <div class="label" style="bottom: 1%;"><b>-20 &deg;</b></div>
-            </div>
-            </div>
-        </div>
-    
-        <div class ="legend" id="legendhumi">
-            <div id="legend-inner-humi">
-            <div class="gradient">
-            <div class="limit">
-            </div>
-            </div>
-            <div class="labels">
-            <div class="label" style="bottom: 100%;"><b>100</b></div>
-            <div class="label" style="bottom: 80%;"><b>80</b></div>
-            <div class="label" style="bottom: 60%;"><b>60</b></div>
-            <div class="label " style="bottom: 40%;"><b>40</b></div>
-            <div class="label" style="bottom: 20%;"><b>20</b></div>
-            <div class="label" style="bottom: 1%;"><b>0 &#37;</b></div>
-            </div>
-            </div>
-        </div> 
-        
-        
-        
-        <div class ="legend" id="legenddruck">
-            <div id="legend-inner-druck">
-            <div class="gradient">
-            <div class="limit">
-            </div>
-            </div>
-            <div class="labels">
-            <div class="label " style="bottom: 100%;"><b>1100</b></div>
-            <div class="label" style="bottom: 50%;"><b>1013</b></div>
-            <div class="label" style="bottom: 1%;"><b>926 hPa</b></div>
-            </div>
-            </div>
-        </div> 
-          
-        
-    </div>
+<!--	<button id="menu" value = "false" onclick="openSideBar(this.value)">Open</button> -->
 
-    </div> 
-      
-    <script type="text/javascript" src="js/leaflet-hash.js"></script>
-    <script type="text/javascript" src="js/map.js"></script> 
-    <script type="text/javascript" src="js/hexbin.js"></script>   
-    
+	<img id="menu" src="menu.png" value = "false" onclick="openSideBar(this.value)">
+
+	<div id="sidebar"> </div>
+
+	<select id="selector1" onchange = reload(this.value)>
+		<option value="P1" checked> PM10</option>
+		<option value="P2"> PM2.5</option>
+		<option value="officialus"> Official AQI US</option>
+		<option value="temp"> Temperature</option>
+		<option value="humi"> Feuchtigkeit</option>
+		<option value="druck"> Druck</option>
+	</select>
+
+	<div id ='map'>
+
+		<div id ='update'></div>
+
+		<div id ='legendcontainer'>
+			<div class ="legend" id="legendpm">
+				<div id="legend-inner-pm">
+					<div class="gradient">
+					</div>
+					<div class="labels">
+						<div class="label" style="bottom: 100%;"><b>500</b></div>
+						<div class="label" style="bottom: 80%;"><b>100</b></div>
+						<div class="label" style="bottom: 60%;"><b>75</b></div>
+						<div class="label limit" style="bottom: 40%;"><b>50</b></div>
+						<div class="label" style="bottom: 20%;"><b>25</b></div>
+						<div class="label" style="bottom: 1%;"><b>0 &micro;g/m&sup3;</b></div>
+					</div>
+				</div>
+			</div>
+
+			<div class ="legend" id="legendpm2">
+				<div id="legend-inner-pm2">
+					<div class="gradient">
+					</div>
+					<div class="labels">
+						<div class="label" style="bottom: 100%;"><b>500</b></div>
+						<div class="label" style="bottom: 80%;"><b>100</b></div>
+						<div class="label" style="bottom: 60%;"><b>75</b></div>
+						<div class="label" style="bottom: 41%;"><b>50</b></div>
+						<div class="label limit" style="bottom: 20%;"><b>25</b></div>
+						<div class="label" style="bottom: 1%;"><b>0 &micro;g/m&sup3;</b></div>
+					</div>
+				</div>
+			</div> 
+
+			<div class ="legend" id="legendaqius" >
+				<h3>Air quality US</h3>
+				<ul>
+					<li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#00E400"></span> Good<div class="tooltip-div">Air quality is considered satisfactory, and air pollution poses little or no risk.</div></li>
+					<li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#FFFF00"></span> Moderate<div class="tooltip-div">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</div></li>
+					<li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#FF7E00"></span> Unhealthy for Sensitive Groups<div class="tooltip-div">Members of sensitive groups may experience health effects. The general public is not likely to be affected. </div></li>
+					<li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#FF0000"></span> Unhealthy<div class="tooltip-div">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects.</div></li>
+					<li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:rgb(143, 63, 151)"></span> Very Unhealthy<div class="tooltip-div">Health alert: everyone may experience more serious health effects.</div></li>
+					<li class="tooltip" onclick="window.open('https://www.airnow.gov/index.cfm?action=aqibasics.aqi','_blank')"><span style="background-color:#7E0023"></span> Hazardous<div class="tooltip-div">Health warnings of emergency conditions. The entire population is more likely to be affected.</div></li>
+				</ul>
+			</div>
+
+			<div class ="legend" id="legendtemp">
+				<div id="legend-inner-temp">
+					<div class="gradient">
+						<div class="limit">
+						</div>
+					</div>
+					<div class="labels">
+						<div class="label" style="bottom: 100%;"><b>50</b></div>
+						<div class="label" style="bottom: 65%;"><b>25</b></div>
+						<div class="label" style="bottom: 30%;"><b>0</b></div>
+						<div class="label" style="bottom: 1%;"><b>-20 &deg;</b></div>
+					</div>
+				</div>
+			</div>
+
+			<div class ="legend" id="legendhumi">
+				<div id="legend-inner-humi">
+					<div class="gradient">
+						<div class="limit">
+						</div>
+					</div>
+					<div class="labels">
+						<div class="label" style="bottom: 100%;"><b>100</b></div>
+						<div class="label" style="bottom: 80%;"><b>80</b></div>
+						<div class="label" style="bottom: 60%;"><b>60</b></div>
+						<div class="label " style="bottom: 40%;"><b>40</b></div>
+						<div class="label" style="bottom: 20%;"><b>20</b></div>
+						<div class="label" style="bottom: 1%;"><b>0 &#37;</b></div>
+					</div>
+				</div>
+			</div> 
+
+			<div class ="legend" id="legenddruck">
+				<div id="legend-inner-druck">
+					<div class="gradient">
+						<div class="limit">
+						</div>
+					</div>
+					<div class="labels">
+						<div class="label " style="bottom: 100%;"><b>1100</b></div>
+						<div class="label" style="bottom: 50%;"><b>1013</b></div>
+						<div class="label" style="bottom: 1%;"><b>926 hPa</b></div>
+					</div>
+				</div>
+			</div> 
+
+		</div>
+
+	</div> 
+
+	<script type="text/javascript" src="/leaflet/leaflet@1.4.0/dist/leaflet.js"></script>
+	<script type="text/javascript" src="/d3js/d3.v4.min.js"></script>
+	<script type="text/javascript" src="/d3js/d3-hexbin.v0.2.min.js"></script>
+	<script type="text/javascript" src="js/leaflet-hash.js"></script>
+	<script type="text/javascript" src="js/places.js"></script> 
+	<script type="text/javascript" src="js/zooms.js"></script> 
+	<script type="text/javascript" src="js/map.js"></script> 
+	<script type="text/javascript" src="js/hexbin.js"></script>
+
 </body>
 </html>
 

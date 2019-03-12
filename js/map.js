@@ -1,118 +1,84 @@
-    var hexagonheatmap;
-    var hmhexaPM_aktuell;
-    var hmhexaPM_24Stunden;
-    var hmhexatemp;
-    var hmhexahumi;
-    var hmhexadruck;
+var hexagonheatmap;
+	var hmhexaPM_aktuell;
+	var hmhexaPM_24Stunden;
+	var hmhexatemp;
+	var hmhexahumi;
+	var hmhexadruck;
+
+	var map;
+	var tiles;
+	var hash;
+
+	var selector1 = "P1";
+
+	var P1orP2 = "";
+
+	var places;
+	var zooms;
+
+//	P10
+
+	var options1 = {
+				valueDomain: [20, 40, 60, 100, 500],
+				colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
+				};
+
+//	PM2.5
+
+	var options2 = {
+				valueDomain: [10, 20, 40, 60, 100],
+				colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
+				};
 
 
+//	AQI US
 
-    var map;
-    var tiles;
-    var hash;
+//	change in order to make gradient
 
-    var selector1 = "P1";
+//	var options3 = {
+//				valueDomain: [0,50,51,100,101,150,151,200,201,300,301,500],
+//				colorRange: ['#00E400','#00E400','#FFFF00','#FFFF00','#FF7E00', '#FF7E00','#FF0000', '#FF0000','rgb(143, 63, 151)', 'rgb(143, 63, 151)','#7E0023','#7E0023']	
+//				};
 
-    var P1orP2 = "";
+	var options3 = {
+				valueDomain: [0,50,100,150,200,300],
+				colorRange: ['#00E400','#FFFF00','#FF7E00','#FF0000','rgb(143, 63, 151)','#7E0023']	
+				};
 
+	var options4 = {
+				valueDomain: [-20, 0, 50],
+				colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
+				};
 
-    var places;
-    var zooms;
-    var cooCenter;
-    var zoomLevel; 
+	var options5 = {
+				valueDomain: [0,100],
+				colorRange: ['#FFFFFF', '#0000FF']	
+				};
 
+	var options6 = {
+				valueDomain: [92600, 101300, 110000],
+				colorRange: ['#FF0000', '#FE9E01', '#00796B']	
+				};
 
-//    P10
+	var div = d3.select("body").append("div")
+				.attr("id", "tooltip")
+				.style("display", "none");
 
-    var options1 = {
-                valueDomain: [20, 40, 60, 100, 500],
-                colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
-                };
+	var div = d3.select("#sidebar").append("div")
+				.attr("id", "table")
+				.style("display", "none");
 
-//    PM2.5
+	var tooltipDiv = document.getElementsByClassName('tooltip-div');
 
+	window.onmousemove = function (e) {
+		var x = e.clientX,
+		y = e.clientY;
 
-    var options2 = {
-                valueDomain: [10, 20, 40, 60, 100],
-                colorRange: ['#00796B', '#F9A825', '#E65100', '#DD2C00', '#960084']	
-                };
-
-
-//    AQI US
-
-//change in order to make gradient
-
-//    var options3 = {
-//                valueDomain: [0,50,51,100,101,150,151,200,201,300,301,500],
-//                colorRange: ['#00E400','#00E400','#FFFF00','#FFFF00','#FF7E00', '#FF7E00','#FF0000', '#FF0000','rgb(143, 63, 151)', 'rgb(143, 63, 151)','#7E0023','#7E0023']	
-//                };
-
-
-
-   var options3 = {
-                valueDomain: [0,50,100,150,200,300],
-                colorRange: ['#00E400','#FFFF00','#FF7E00','#FF0000','rgb(143, 63, 151)','#7E0023']	
-                };
-
-
-
-
-    var options4 = {
-                    valueDomain: [-20, 0, 50],
-                    colorRange: ['#0022FE', '#FFFFFF', '#FF0000']	
-                };
-
-
-
-
-
-    var options5 = {
-                    valueDomain: [0,100],
-                  colorRange: ['#FFFFFF', '#0000FF']	
-                };
-
-
-
-
-
-
-    var options6 = {
-                   valueDomain: [92600, 101300, 110000],
-                    colorRange: ['#FF0000', '#FE9E01', '#00796B']	
-                };
-
-   
-
-
-   var div = d3.select("body").append("div")
-    .attr("id", "tooltip")
-    .style("display", "none");
-
-  var div = d3.select("#sidebar").append("div")
-    .attr("id", "table")
-    .style("display", "none");
-
-
-
-
-var tooltipDiv = document.getElementsByClassName('tooltip-div');
-
-
-
-window.onmousemove = function (e) {
-    var x = e.clientX,
-        y = e.clientY;
-    
-    
-    
-    for (var i = 0; i < tooltipDiv.length; i++) {
-       tooltipDiv.item(i).style.top = (y + 1 )+ 'px';
-   tooltipDiv.item(i).style.left = (x + 20) + 'px';};
-    
-    
-    
-};
-
+		for (var i = 0; i < tooltipDiv.length; i++) {
+			tooltipDiv.item(i).style.top = (y + 1 )+ 'px';
+			tooltipDiv.item(i).style.left = (x + 20) + 'px';
+		};
+	};
 
 //window.onpopstate = function(event) {
 //	if ((typeof location.search !== 'undefined') && (typeof location.hash !== 'undefined') && (location.hash !== '')) {
@@ -136,139 +102,112 @@ window.onmousemove = function (e) {
 //
 //
 
-
-if (location.hash) {
+	if (location.hash) {
 		var hash_params = location.hash.split("/");
 		var cooCenter = [hash_params[1],hash_params[2]];
 		var zoomLevel = hash_params[0].substring(1);
-//} else if (location.hostname.split(".").length == 4){
-    
-}else { 
-    var hostname = location.hostname; 
-    var hostname_parts = hostname.split("."); 
-       
-       if (hostname_parts.length == 4) {
-    
-    
-    
-		var place = hostname_parts[0].toLowerCase();
-        
- 
-    d3.json("/CODES/luftdaten_new/js/places.json",function(data){
-    
-    console.log(data);        
-        places = data;  
-        
-        if (typeof places[place] !== 'undefined' && places[place] !== null) {
-			 cooCenter = places[place];
-			 zoomLevel = 11;
-		}else{cooCenter = [50.495171, 9.730827];
-             zoomLevel = 6;
-             };
-        
-        
-        
-           });
-                   
-    d3.json("/CODES/luftdaten_new/js/zooms.json",function(data){
-    
-    console.log(data);        
-        zooms = data; 
-        
-        if (typeof zooms[place] !== 'undefined' && zooms[place] !== null) {
-            zoomLevel = zooms[place];
-		}else{cooCenter = [50.495171, 9.730827];
-             zoomLevel = 6;
-             };
-        
-           });
-               
+//	} else if (location.hostname.split(".").length == 4){
 
-      }else{
-    
-     cooCenter = [50.495171, 9.730827];
-     zoomLevel = 6;  
-};
-    
-    console.log("Center: "+cooCenter);
-	console.log("Zoom: "+zoomLevel)
+	} else {
+		var hostname = location.hostname;
+		var hostname_parts = hostname.split(".");
+		if (hostname_parts.length = 4) {
+			var place = hostname_parts[0].toLowerCase();
+			console.log(place);
 
-};
+			d3.json("js/places.json",function(error,data){
+				console.log(error);
+				places = JSON.parse(JSON.stringify(data));
+			});
+			console.log(places);
 
+			d3.json("js/zooms.json",function(error,data){
+				console.log(error);
+				zooms = JSON.parse(JSON.stringify(data));
+				console.log(zooms);
+			});
 
-    window.onload=function(){
-        
-//          if (!navigator.geolocation){
-//    console.log("Geolocation is not supported by your browser");
-//    
-//  };
-//        
+			if (typeof places[place] !== 'undefined' && places[place] !== null) {
+				var cooCenter = places[place];
+				var zoomLevel = 11;
+			}
+			if (typeof zooms[place] !== 'undefined' && zooms[place] !== null) {
+				var zoomLevel = zooms[place];
+			}
+			console.log("Center: "+cooCenter);
+			console.log("Zoom: "+zoomLevel)
+		} else {
+			var cooCenter = [50.495171, 9.730827];
+			var zoomLevel = 6;
+		}
+	};
+
+	window.onload=function(){
+
+//		if (!navigator.geolocation){
+//			console.log("Geolocation is not supported by your browser");
+//		};
 //
-//        navigator.geolocation.getCurrentPosition(success, error);  
+//		navigator.geolocation.getCurrentPosition(success, error);
 
-        
-//    map.setView([50.495171, 9.730827], 6);
-        
-    map.setView(cooCenter, zoomLevel);
+//		map.setView([50.495171, 9.730827], 6);
 
-        
-    hexagonheatmap = L.hexbinLayer(options1).addTo(map);
-        
-        
-//        REVOIR ORDRE DANS FONCTION READY
-        
-       d3.queue()
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+		map.setView(cooCenter, zoomLevel);
 
-    .awaitAll(ready); 
-                   
-   d3.interval(function(){ 
-    
-    d3.selectAll('path.hexbin-hexagon').remove();
+		hexagonheatmap = L.hexbinLayer(options1).addTo(map);
 
-    d3.queue()
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
-    .defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+//		REVOIR ORDRE DANS FONCTION READY
 
-    .awaitAll(ready); 
-            
-       console.log('reload')
-                     
-    }, 300000);
+		d3.queue()
+			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
+			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
+			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+
+			.awaitAll(ready); 
+
+		d3.interval(function(){
+
+		d3.selectAll('path.hexbin-hexagon').remove();
+
+		d3.queue()
+			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.dust.min.json")
+			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.24h.json")
+			.defer(d3.json, "https://api.luftdaten.info/static/v2/data.temp.min.json")
+
+			.awaitAll(ready); 
+
+		console.log('reload')
+
+	}, 300000);
 
  
-        map.on('moveend', function() { 
-        
-        hexagonheatmap._zoomChange();
-            
-        });
-        
-        
-        
-//        REVOIR LES idselec!
-        
-        map.on('move', function() { 
-//        div.style("display", "none");
-            idselec1=0;
-            idselec0=0;    
-        });
+	map.on('moveend', function() { 
 
-//        map.on('dblclick', function() { 
-////        div.style("display", "none");
-//            idselec1=0;
-//            idselec0=0;
-//        });
-//        
-//        map.on('click', function() { 
-////        div.style("display", "none");
-//            idselec1=0;
-//            idselec0=0;
-//        });
-        
-//        REVOIR LE DOUBLECLIQUE
+		hexagonheatmap._zoomChange();
+
+	});
+
+//	REVOIR LES idselec!
+
+	map.on('move', function() { 
+//		div.style("display", "none");
+		idselec1=0;
+		idselec0=0;
+	});
+
+//	map.on('dblclick', function() { 
+//		div.style("display", "none");
+//		idselec1=0;
+//		idselec0=0;
+//	});
+//
+//	map.on('click', function() { 
+//		div.style("display", "none");
+//			idselec1=0;
+//			idselec0=0;
+//	});
+
+//	REVOIR LE DOUBLECLIQUE
         
            map.on('click', function(e) {
                map.setView([e.latlng.lat, e.latlng.lng], map.getZoom()); 
@@ -541,61 +480,54 @@ function makeHexagonmap(data,option){
 
 
 function color(val){  
+	var col= parseInt(val);
     
-        
-     var col= parseInt(val);
-    
-    if(val>= 0 && val < 25){ return "#00796b";};
-    if(val>= 25 && val < 50){
-        var couleur = interpolColor('#00796b','#f9a825',(col-25)/25);
-        return couleur;
-    };
-    if(val>= 50 && val < 75){
-        var couleur = interpolColor('#f9a825','#e65100',(col-50)/25);
-        return couleur;
-    };
-    if(val>= 75 && val < 100){
-        var couleur = interpolColor('#e65100','#dd2c00',(col-75)/25);
-        return couleur;
-    };
-    if(val>=100 && val < 500){
-        var couleur = interpolColor('#dd2c00','#8c0084',(col-100)/400);
-        return couleur;
-    };
-    
-    if(val>=100 && val < 500){ return "#8c0084";};   
+	if(val>= 0 && val < 25){ return "#00796b";};
+	if(val>= 25 && val < 50){
+		var couleur = interpolColor('#00796b','#f9a825',(col-25)/25);
+		return couleur;
+	};
+	if(val>= 50 && val < 75){
+		var couleur = interpolColor('#f9a825','#e65100',(col-50)/25);
+		return couleur;
+	};
+	if(val>= 75 && val < 100){
+		var couleur = interpolColor('#e65100','#dd2c00',(col-75)/25);
+		return couleur;
+	};
+	if(val>=100 && val < 500){
+		var couleur = interpolColor('#dd2c00','#8c0084',(col-100)/400);
+		return couleur;
+	};
 
- 
+    if(val>=100 && val < 500){ return "#8c0084";};
 };
 
 function interpolColor(a, b, amount) { 
-    var ah = parseInt(a.replace(/#/g, ''), 16),
-        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
-        bh = parseInt(b.replace(/#/g, ''), 16),
-        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
-        rr = ar + amount * (br - ar),
-        rg = ag + amount * (bg - ag),
-        rb = ab + amount * (bb - ab);
-//    console.log('#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1));
-    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+	var ah = parseInt(a.replace(/#/g, ''), 16),
+			ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+			bh = parseInt(b.replace(/#/g, ''), 16),
+			br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+			rr = ar + amount * (br - ar),
+			rg = ag + amount * (bg - ag),
+			rb = ab + amount * (bb - ab);
+//	console.log('#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1));
+	return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
 };
 
 function drop() {
-    document.getElementById("control").classList.toggle("show");
-    idselec1=0;
-    idselec0=0;
-};
+	document.getElementById("control").classList.toggle("show");
+	idselec1=0;
+	idselec0=0;
+}
 
 function openSideBar(value){
-    
-   var x = document.getElementById("sidebar");
-    if (x.style.display === "block") {
-        x.style.display = "none";
-        document.getElementById('menu').innerHTML='Open';
-    } else {
-        x.style.display = "block";
-        document.getElementById('menu').innerHTML='Close';
-
-    };
-    
+	var x = document.getElementById("sidebar");
+	if (x.style.display === "block") {
+		x.style.display = "none";
+		document.getElementById('menu').innerHTML='Open';
+	} else {
+		x.style.display = "block";
+		document.getElementById('menu').innerHTML='Close';
+	};
 };
