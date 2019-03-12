@@ -114,7 +114,7 @@ if (location.hash) {
 } else {
 	var hostname = location.hostname;
 	var hostname_parts = hostname.split(".");
-	if (hostname_parts.length = 4) {
+	if (hostname_parts.length == 4) {
 		var place = hostname_parts[0].toLowerCase();
 		console.log(place);
 
@@ -208,7 +208,7 @@ map = L.map('map',{ zoomControl:true,minZoom:1,doubleClickZoom:false});
 
 hash = new L.Hash(map);
 
-tiles = L.tileLayer('https://{s}.tiles.madavi.de/{z}/{x}/{y}.png',{
+tiles = L.tileLayer('https://maps.luftdaten.info/tiles/{z}/{x}/{y}.png',{
 		attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
 		maxZoom: 18}).addTo(map);
 
