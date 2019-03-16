@@ -56,8 +56,10 @@ var hexagonheatmap;
 				};
 
 	var options6 = {
-				valueDomain: [92600, 101300, 110000],
-				colorRange: ['#FF0000', '#FE9E01', '#00796B']	
+				valueDomain: [92600, 94775, 96950, 99125, 101300, 103475, 105650, 107825, 110000],
+				colorRange: ["#dd2e97", "#6b3b8f", "#2979b9",
+               "#02B9ed", "#13ae52", "#c9d841",
+               "#fad635", "#f0a03d", "#892725"]	
 				};
 
 	var div = d3.select("body").append("div")
