@@ -16,6 +16,25 @@ var hexagonheatmap;
 	var places;
 	var zooms;
 
+
+
+
+var locale = d3.timeFormatLocale({
+  "dateTime": "%Y.%m.%d %H:%M:%S",
+  "date": "%d.%m.%Y",
+  "time": "%H:%M:%S",
+  "periods": ["AM", "PM"],
+  "days": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+  "shortDays": ["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."],
+  "months": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+  "shortMonths": ["Jan.", "Feb.", "Mar.", "Apr.", "Mai", "Jun.", "Jul.", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+});
+
+
+
+
+
+
 //	P10
 
 	var options1 = {
@@ -77,7 +96,7 @@ var hexagonheatmap;
 		y = e.clientY;
 
 		for (var i = 0; i < tooltipDiv.length; i++) {
-			tooltipDiv.item(i).style.top = (y + 1 )+ 'px';
+			tooltipDiv.item(i).style.top = (y - 10 )+ 'px';
 			tooltipDiv.item(i).style.left = (x + 20) + 'px';
 		};
 	};
@@ -263,8 +282,43 @@ function ready(error,data) {
 	}, []);
 
 //	console.log(hmhexadruck);
+    
+    var dateParser = d3.timeParse("%Y-%m-%d %H:%M:%S");    
+    var timestamp = dateParser(data[0][0].timestamp);
 
-	document.getElementById('update').innerHTML = "Last update: " + data[0][0].timestamp;
+    console.log(timestamp);
+    
+    var localTime = new Date();
+    var timeOffset = localTime.getTimezoneOffset(); 
+    
+    console.log(timeOffset);
+    
+    var newTime = d3.timeMinute.offset(timestamp, -(timeOffset));
+
+    console.log(newTime);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    var dateFormater = locale.format("%A, %d. %B %Y, um %H:%M:%S");
+    
+//        var dateFormater = d3.timeFormat("%A %d %B %Y %H:%M:%S");
+
+    
+    	document.getElementById('update').innerHTML = "Last update: " + dateFormater(newTime);
+
+
+    
+//	document.getElementById('update').innerHTML = "Last update: " + data[0][0].timestamp;
 
 	if(selector1 == "P1") {makeHexagonmap(hmhexaPM_aktuell,options1);};
 	if(selector1 == "P2") {makeHexagonmap(hmhexaPM_aktuell,options2);};
@@ -458,13 +512,24 @@ function drop() {
 	idselec0=0;
 }
 
-function openSideBar(value){
+function openSideBar(){
 	var x = document.getElementById("sidebar");
 	if (x.style.display === "block") {
 		x.style.display = "none";
-		document.getElementById('menu').innerHTML='Open';
 	} else {
 		x.style.display = "block";
-		document.getElementById('menu').innerHTML='Close';
+	};
+};
+
+function openErklaerung(){
+	var x = document.getElementById("map-info");
+    
+    console.log(x.style.display);
+	if (x.style.display === "none") {
+		x.style.display = "block";
+        document.getElementById("erklaerung").innerHTML = "Erklärung ausblenden";
+	} else {
+		x.style.display = "none";
+        document.getElementById("erklaerung").innerHTML = "Erklärung einblenden"
 	};
 };

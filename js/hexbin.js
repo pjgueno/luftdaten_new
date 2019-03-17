@@ -350,10 +350,13 @@ function sensorNr(data){
 
 	div.transition()
 		.duration(200)
-		.style("display", "inline");
+		.style("display", "block");
+//    .style("display", "inline");
+
 
 	div.html(textefin)
-		.style("left","0px")		
+//		.style("left","0px")
+        .style("padding","10px")		
 		.style("top","100px");
 };
 
