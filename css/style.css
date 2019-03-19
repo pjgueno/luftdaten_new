@@ -31,31 +31,69 @@ body { height: 100%;
 #update{
         font-family: arial, sans-serif;
         color:black;
+        font-weight: bold;
         font-size: 14px;
         position:absolute;
         top:20px;
         left:100px;
-        width: 200px;
+        width: 350px;
+        text-align: center;
         height: auto;
         z-index: 1000;
-        background:rgb(255, 255, 255,1.0);
+        background-color: #3498DB;
+      border-radius: 5px;
+}
+
+#update:hover, #update:focus{
+    background-color: #2980B9;
+}
+
+.tooltip-div{
+    padding: 5px;
+    border-radius: 5px;
+    width:auto;
+    max-width: 500px;
+    height:auto;
 }
 
 select{
         font-family: arial, sans-serif;
         color:black;
+        font-weight: bold;
         font-size: 14px;
         position:absolute;
         bottom:40px;
         left:500px;
-        width: 200px;
+        width: 100px;
         height: auto;
         z-index: 1000;
-        background:rgb(255, 255, 255,1.0);
+        background:#3498DB;
+        border-radius: 5px;
+    border: 0px;
+    border-color:#303030;
+    border-style: solid;
 }
 
+        
+select option {
+                background:#3498DB;
+            }
 
 
+#erklaerung{
+    padding: 10px;
+    font-family: arial, sans-serif;
+    color:black;
+    cursor: pointer; 
+    z-index: 1000;
+}
+
+#map-info{
+    
+    padding: 10px;
+    font-family: arial, sans-serif;
+    color:black;
+}
 
 
 
@@ -301,7 +339,7 @@ li {
     display:block;
     position:fixed;
     overflow:hidden;
-    background-color: white;
+    background-color: #3498DB;
     z-index:1000;
 }
 
@@ -330,21 +368,6 @@ ul {
 img.leaflet-tile{
              filter:  grayscale(85%) saturate(150%) hue-rotate(60deg) contrast(90%) brightness(110%);
             -webkit-filter:    grayscale(85%) saturate(150%) hue-rotate(60deg) contrast(90%) brightness(110%);      }      
-      
-        
-        select{
-            background:    #CECECE;
-             border: 0px;
-             border-radius: 0px;
-            border-style: solid;
-        border-radius: 5px;
-        border-color:#303030;
-        
-         }
-        
-        select option {
-                background:#CECECE;
-            }
 
 
 table{
