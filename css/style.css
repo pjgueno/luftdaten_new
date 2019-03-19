@@ -284,10 +284,11 @@ select option {
 #legend-inner-druck .gradient {
         opacity: 0.8;
         width: 20px;
-        background: -webkit-linear-gradient(bottom, #FF0000 0%, #FE9E01 50%, #00796B 100%);
-        background: linear-gradient(to top, #FF0000 0%, #FE9E01 50%, #00796B 100%);
+        background: -webkit-linear-gradient(bottom, #dd2e97 0%,#6b3b8f 12.5%, #2979b9 25%, #02B9ed 37.5%, #13ae52 50%, #c9d841 62.5%, #fad635 75%, #f0a03d 87.5%, #892725 100%);
+        background: linear-gradient(to top, #dd2e97 0%,#6b3b8f 12.5%, #2979b9 25%, #02B9ed 37.5%, #13ae52 50%, #c9d841 62.5%, #fad635 75%, #f0a03d 87.5%, #892725 100%);
         position: relative;
         }
+
 
 #legend-inner-druck .labels {
         width: 150px;
