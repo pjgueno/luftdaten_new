@@ -338,11 +338,11 @@ function sensorNr(data){
 			var textefin = texte + sensors + "</table>";
 		};
 		if (selector1 == "druck"){
-			var texte = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensors</th><th class = 'titre'>Druck hPa</th></tr><tr><td class='idsens'>Median "+data.length+" Sens.</td><td id='drucksens'>"+parseInt(d3.median(data, (o) => o.o.data.Press)/10)+"</td></tr>";
+			var texte = "<table id='results' style='width:380px;'><tr><th class ='titre'>Sensors</th><th class = 'titre'>Druck hPa</th></tr><tr><td class='idsens'>Median "+data.length+" Sens.</td><td id='drucksens'>"+(d3.median(data, (o) => o.o.data.Press)).toFixed(1)+"</td></tr>";
 			var sensors = '';
 
 			data.forEach(function(i) {
-				sensors += "<tr><td class='idsens' value="+i.o.id+" onclick='displayGraph("+i.o.id+")'>(+) #"+i.o.id+"</td><td id='drucksens'>"+parseInt(i.o.data.Press/10)+"</td></tr><tr id='graph_"+i.o.id+"'></tr>";
+				sensors += "<tr><td class='idsens' value="+i.o.id+" onclick='displayGraph("+i.o.id+")'>(+) #"+i.o.id+"</td><td id='drucksens'>"+i.o.data.Press.toFixed(1)+"</td></tr><tr id='graph_"+i.o.id+"'></tr>";
 			});
 			var textefin = texte + sensors + "</table>";
 		};
