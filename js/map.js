@@ -75,7 +75,7 @@ var locale = d3.timeFormatLocale({
 				};
 
 	var options6 = {
-				valueDomain: [92600, 94775, 96950, 99125, 101300, 103475, 105650, 107825, 110000],
+				valueDomain: [926, 947.75, 969.50, 991.25, 1013, 1034.75, 1056.50, 1078.25, 1100],
 				colorRange: ["#dd2e97", "#6b3b8f", "#2979b9",
                "#02B9ed", "#13ae52", "#c9d841",
                "#fad635", "#f0a03d", "#892725"]	
@@ -276,7 +276,10 @@ function ready(error,data) {
 	hmhexadruck = data[2].reduce(function(filtered, item) {
 //		if (item.sensordatavalues.length == 3) {
 		if (item.sensor.sensor_type.name == "BME280" || item.sensor.sensor_type.name == "BMP180" || item.sensor.sensor_type.name == "BMP280" ) {
-			filtered.push({"data":{"Press":parseInt(getRightValue(item.sensordatavalues,"pressure_at_sealevel"))}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})
+			value_temp = parseInt(getRightValue(item.sensordatavalues,"pressure_at_sealevel"))/100;
+			if ((value_temp > 850) && (value_temp < 1200)) {
+				filtered.push({"data":{"Press":value_temp}, "id":item.sensor.id, "latitude":item.location.latitude,"longitude":item.location.longitude})
+			}
 		}
 		return filtered;
 	}, []);
